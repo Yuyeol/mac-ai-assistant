@@ -24,6 +24,7 @@ macOS 상단 메뉴바 아이콘 클릭 시 팝업으로 내려오는 채팅 기
 | ------------------- | ---------------------------- | --------------------------------- |
 | 데스크탑 프레임워크 | Tauri 2.x                    | 네이티브 앱 래퍼, IPC, 시스템 API |
 | 프론트엔드          | React 19 + TypeScript + Vite | 채팅 UI (WebView)                 |
+| 스타일링            | Tailwind CSS v4              | UI 스타일링 (`@tailwindcss/vite`) |
 | 백엔드              | Rust                         | 트레이 관리, osascript 실행, 알림 |
 | AI                  | Gemini API                   | 대화 생성, 브리핑                 |
 | 외부 DB             | Supabase                     | 링크/북마크 데이터                |

@@ -1,81 +1,31 @@
-# Phase 3 — AI 레이어 (AI Layer)
+# Phase 3 — 앱 창 UI 껍데기
 
-**목표**: Gemini API 연동, 컨텍스트 기반 스트리밍 대화
+**목표**: 앱 창의 몰입형 채팅 레이아웃 완성 (기능 연결 없음)
 **상태**: ⬜ 미시작
 
----
-
-## 비서 구조
-
-비서는 코드에서 직접 정의 (`src/lib/assistants.ts`). UI에서 생성 불필요.
-
-```typescript
-interface Assistant {
-  id: string;
-  name: string;
-  avatar: string;        // emoji
-  description: string;
-  systemPrompt: string;
-}
-
-const ASSISTANTS: Assistant[] = [
-  {
-    id: 'general',
-    name: '범용 AI 비서',
-    avatar: '🤖',
-    systemPrompt: '...',
-  },
-];
-```
+> UI 스펙: @.claude/spec/frontend/ui/app-window.md
 
 ---
 
-## Gemini API 호출 구조
+## 구현 범위
 
-```
-[시스템 메시지]
-비서 시스템 프롬프트
-  + 현재 Apple Notes 요약 (최근 5개, 본문 200자 제한)
-  + 미완료 Reminders 목록 (날짜 포함)
-  + 최근 링크 목록 (title + url + description)
-
-[대화 히스토리]
-이전 user/model 메시지
-
-[현재 입력]
-사용자 메시지
-
-→ Gemini Streaming Response
-→ SSE 파싱 → React 타이핑 효과
-```
-
-**스트리밍 엔드포인트:**
-```
-POST https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:streamGenerateContent
-  ?key={API_KEY}&alt=sse
-```
-
----
-
-## 컨텍스트 주입 전략
-
-| 데이터 | 포함 범위 | 제한 |
-|--------|-----------|------|
-| Notes | 최근 5개 | 본문 200자 요약 |
-| Reminders | 미완료 전체 | 날짜 포함 |
-| Links | 최근 10개 | title + url + description |
-
----
+- 캐릭터 이미지 영역 (더미 이미지)
+- 말풍선 채팅 레이아웃
+- 비서 선택 사이드바 또는 탭
+- 입력바 (팝업과 동일 컴포넌트 재사용)
+- 이미지 컷 전환 로직 틀 (실제 트리거는 Phase 4)
 
 ## 구현 대상 파일
 
 | 파일 | 내용 |
 |------|------|
-| `src/lib/gemini.ts` | Gemini API 스트리밍 클라이언트 |
-| `src/lib/assistants.ts` | 비서 정의 배열 |
-| `src/hooks/useChat.ts` | 채팅 상태 및 Gemini 스트리밍 훅 |
-| `src/components/ChatWindow.tsx` | 메인 채팅 컨테이너 |
-| `src/components/MessageList.tsx` | 스크롤 메시지 목록 |
-| `src/components/MessageBubble.tsx` | 개별 메시지 버블 |
-| `src/components/InputBar.tsx` | 텍스트 입력창 + 전송 버튼 |
-| `src/components/AssistantHeader.tsx` | 비서 이름/아바타/액션 버튼 |
+| `src/components/app/AppWindow.tsx` | 앱 창 루트 컴포넌트 |
+| `src/components/app/CharacterView.tsx` | 캐릭터 이미지 영역 |
+| `src/components/app/ChatBubble.tsx` | 말풍선 메시지 |
+| `src/components/app/MessageList.tsx` | 채팅 스크롤 영역 |
+| `src/components/app/AssistantSidebar.tsx` | 비서 전환 사이드바 |
+
+## 미결 사항
+
+- Live2D 라이브러리 적용 여부 결정 필요
+- 캐릭터 이미지 컷 수 및 감정 상태 정의 필요
