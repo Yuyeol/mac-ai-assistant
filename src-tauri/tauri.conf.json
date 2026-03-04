@@ -14,8 +14,8 @@
     "windows": [
       {
         "title": "mac-ai-assistant",
-        "width": 350,
-        "height": 500,
+        "width": 480,
+        "height": 110,
         "decorations": false,
         "transparent": true,
         "visible": false,

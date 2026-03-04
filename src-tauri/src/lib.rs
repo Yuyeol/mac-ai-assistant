@@ -7,6 +7,7 @@ mod models;
 mod tray;
 
 use commands::{actions::notification, data::notes, data::reminders};
+use tauri::Manager;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -19,6 +20,16 @@ pub fn run() {
             app.set_activation_policy(tauri::ActivationPolicy::Accessory);
 
             tray::setup_tray(app)?;
+
+            // 포커스를 잃으면 팝업 숨김 (화면 밖 클릭)
+            if let Some(window) = app.get_webview_window("main") {
+                let win = window.clone();
+                window.on_window_event(move |event| {
+                    if let tauri::WindowEvent::Focused(false) = event {
+                        let _ = win.hide();
+                    }
+                });
+            }
 
             Ok(())
         })
